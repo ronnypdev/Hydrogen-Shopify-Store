@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState, useEffect} from 'react';
 import {Await, NavLink, useAsyncValue} from '@remix-run/react';
 import {
   type CartViewPayload,
@@ -24,19 +24,77 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
+  const [isScrolled, setIsScrolled] = useState(false);
+  const [isScrollingUp, setIsScrollingUp] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+  const {type: asideType} = useAside();
+
+  useEffect(() => {
+    const root = document.documentElement;
+
+    root.style.setProperty(
+      '--announcement-height',
+      isScrolled ? '0px' : '40px',
+    );
+    root.style.setProperty('--header-height', isScrolled ? '64px' : '80px');
+
+    const handleScroll = () => {
+      if (asideType !== 'closed') return;
+
+      const currentScrollY = window.scrollY;
+
+      setIsScrollingUp(currentScrollY < lastScrollY);
+      setLastScrollY(currentScrollY);
+      setIsScrolled(currentScrollY > 50);
+    };
+
+    window.addEventListener('scroll', handleScroll, {passive: true});
+
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY, isScrolled, asideType]);
+
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-    </header>
+    <div
+      className={`fixed w-full z-40 transition-transform duration-500 ease-in-out
+      ${
+        !isScrollingUp && isScrolled && asideType === 'closed'
+          ? '-translate-y-full'
+          : 'translate-y-0'
+      }`}
+    >
+      {/* Announcement Bar */}
+      <div
+        className={`overflow-hidden transition-all duration-500 ease-in-out bg-brand-navy text-white ${
+          isScrolled ? 'max-h-0' : 'max-h-12'
+        }`}
+      >
+        <div className="container mx-auto text-center py-2.5 px-4">
+          <p className="font-source text-[13px] leading-tight sm:text-sm">
+            Complimentary Shipping on Orders Above $500
+          </p>
+        </div>
+      </div>
+
+      {/* Main header */}
+      <header
+        className={`transition-all duration-500 ease-in-out broder-b ${
+          isScrolled
+            ? 'bg-white/80 backdrop-blur-lg shadow-sm border-transparent'
+            : 'bg-white border-gray-100'
+        }`}
+      >
+        <div className="container mx-auto">
+          {/* Mobile Logo (550px and below) */}
+          <div
+            className={`hidden max-[550px]:block text-center border-br border-gray-100 transition-all duration-300 ease-in-out ${
+              isScrolled ? 'py-1' : 'py-2'
+            }`}
+          >
+            <NavLink></NavLink>
+          </div>
+        </div>
+      </header>
+    </div>
   );
 }
 
