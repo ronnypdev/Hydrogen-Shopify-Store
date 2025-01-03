@@ -27,75 +27,42 @@
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/fonts/playfair-display/SourceSansPro-Black.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BlackItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Bold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BoldItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLight.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Italic.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Light.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-LightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Regular.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Semibold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-SemiboldItalic.ttf')
-      format('opentype');
-  font-weight: 200 900;
+  src: url('/fonts/playfair-display/SourceSansPro-Light.ttf') format('opentype');
+  font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/fonts/playfair-display/SourceSansPro-Black.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BlackItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Bold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BoldItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLight.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Italic.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Light.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-LightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Regular.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Semibold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-SemiboldItalic.ttf')
-      format('opentype');
-  font-weight: 200 900;
-  font-style: italic;
+  src: url('/fonts/playfair-display/SourceSansPro-Regular.ttf')
+    format('opentype');
+  font-weight: 400;
+  font-style: normal;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'Source Sans Pro';
-  src: url('/fonts/playfair-display/SourceSansPro-Black.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BlackItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Bold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-BoldItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLight.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-ExtraLightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Italic.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Light.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-LightItalic.ttf')
-      format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Regular.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-Semibold.ttf') format('opentype'),
-    url('/fonts/playfair-display/SourceSansPro-SemiboldItalic.ttf')
-      format('opentype');
-  font-weight: 200 900;
-  font-style: bold;
+  src: url('/fonts/playfair-display/SourceSansPro-Semibold.ttf')
+    format('opentype');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('/fonts/playfair-display/SourceSansPro-Bold.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  src: url('/fonts/playfair-display/SourceSansPro-Black.ttf') format('opentype');
+  font-weight: 700;
+  font-style: normal;
   font-display: swap;
 }
