@@ -78,7 +78,7 @@ export function Header({
 
       {/* Main header */}
       <header
-        className={`transition-all duration-500 ease-in-out broder-b ${
+        className={`transition-all duration-500 ease-in-out border-b ${
           isScrolled
             ? 'bg-white/80 backdrop-blur-lg shadow-sm border-transparent'
             : 'bg-white border-gray-100'
@@ -152,43 +152,48 @@ export function HeaderMenu({
   const className = `header-menu-${viewport}`;
   const {close} = useAside();
 
-  return (
-    <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
+  const baseClassName =
+    "transition-all duration-200 hover:text-brand-gold font-source relative after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-[1px] after:transition-all after:duration-300 hover:after:w-full";
 
-        // if the url is internal, we strip the domain
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
-        return (
-          <NavLink
-            className="header-menu-item"
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            style={activeLinkStyle}
-            to={url}
-          >
-            {item.title}
-          </NavLink>
-        );
-      })}
+  const desktopClassname =
+    'flex items-center justify-center space-x-12 text-sm uppercase tracking-wider';
+
+  const mobileClassName = 'flex flex-col px-6';
+
+  return (
+    <nav
+      className={viewport === 'desktop' ? desktopClassname : mobileClassName}
+      role="navigation"
+    >
+      {viewport === 'mobile' && <></>}
+
+      {viewport === 'desktop' &&
+        menu?.items.map((item) => {
+          if (!item.url) return null;
+          const url =
+            item.url.includes('myshopify.com') ||
+            item.url.includes(publicStoreDomain) || // cadence.com/collections
+            item.url.includes(primaryDomainUrl) // store.cadence.com/collections
+              ? new URL(item.url).pathname // --> /collections
+              : item.url; // google.com
+
+          return (
+            <NavLink
+              className={({isActive}) =>
+                `${baseClassName} ${
+                  isActive ? 'text-brand-gold' : 'text-brand-navy'
+                }`
+              }
+              end
+              key={item.id}
+              onClick={close}
+              prefetch="intent"
+              to={url}
+            >
+              {item.title}
+            </NavLink>
+          );
+        })}
     </nav>
   );
 }
