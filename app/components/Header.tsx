@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {Menu} from 'lucide-react';
+import {Menu, User, Search} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -160,12 +160,66 @@ export function HeaderMenu({
 
   const mobileClassName = 'flex flex-col px-6';
 
+  if (!menu) return null;
+
   return (
     <nav
       className={viewport === 'desktop' ? desktopClassname : mobileClassName}
       role="navigation"
     >
-      {viewport === 'mobile' && <></>}
+      {viewport === 'mobile' && (
+        <>
+          <div className="space-y-6 py-4">
+            {menu?.items.map((item) => {
+              if (!item.url) return null;
+              const url =
+                item.url.includes('myshopify.com') ||
+                item.url.includes(publicStoreDomain) || // cadence.com/collections
+                item.url.includes(primaryDomainUrl) // store.cadence.com/collections
+                  ? new URL(item.url).pathname // --> /collections
+                  : item.url; // google.com
+              return (
+                <NavLink
+                  className={({isActive}) =>
+                    `${baseClassName} text-lg py-2 block ${
+                      isActive ? 'text-brand-gold' : 'text-brand-navy'
+                    }`
+                  }
+                  end
+                  key={item.id}
+                  onClick={close}
+                  prefetch="intent"
+                  to={url}
+                >
+                  {item.title}
+                </NavLink>
+              );
+            })}
+          </div>
+          {/* Mobile Footer Links */}
+          <div className="mt-auto border-t border-gray-100 py-6">
+            <div className="space-y-4">
+              <NavLink
+                to="/account"
+                className="flex items-center space-x-2 text-brand-navy hover:text-brand-gold"
+              >
+                <User className="w-5 h-5" />
+                <span className="font-source text-base">Account</span>
+              </NavLink>
+
+              <button
+                onClick={() => {
+                  close();
+                }}
+                className="flex items-center space-x-2 text-brand-navy hover:text-brand-gold w-full text-left"
+              >
+                <Search className="w-5 h-5" />
+                <span className="font-source text-base">Search</span>
+              </button>
+            </div>
+          </div>
+        </>
+      )}
 
       {viewport === 'desktop' &&
         menu?.items.map((item) => {
