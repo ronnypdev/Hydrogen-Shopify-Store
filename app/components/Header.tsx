@@ -7,7 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import {Menu, User, Search} from 'lucide-react';
+import {Menu, User, Search, ShoppingBag} from 'lucide-react';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -103,7 +103,7 @@ export function Header({
           {/* Header Content */}
           <div
             className={`flex items-center justify-between px-4 sm:px-6 transition-all duration-300 ease-in-out ${
-              isScrolled ? 'py-3 sm:py-4' : ''
+              isScrolled ? 'py-3 sm:py-4' : 'py-4 sm:py-6'
             }`}
           >
             {/* Mobile Menu Toggle */}
@@ -130,6 +130,11 @@ export function Header({
                 primaryDomainUrl={header.shop.primaryDomain.url}
                 publicStoreDomain={publicStoreDomain}
               />
+            </div>
+
+            {/* CTA */}
+            <div className="flex items-center">
+              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
             </div>
           </div>
         </div>
@@ -257,16 +262,19 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
-      <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
-        <Suspense fallback="Sign in">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
-          </Await>
-        </Suspense>
-      </NavLink>
+    <nav
+      className="flex items-center space-x-2 sm:space-x-3 lg:space-x-8"
+      role="navigation"
+    >
       <SearchToggle />
+      <NavLink
+        prefetch="intent"
+        to="/account"
+        className="hover:text-brand-gold transition-all duration-200 p-2 after:content-[''] after:absolute after:bottom-0 after:left-1/2 after:-translate-x-1/2 after:w-0 after:h-[1px] after:bg-brand-gold after:transition after:duration-300 hover:after:w-full"
+      >
+        <span className="sr-only">Account</span>
+        <User className="w-5 h-5" />
+      </NavLink>
       <CartToggle cart={cart} />
     </nav>
   );
@@ -287,8 +295,11 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset" onClick={() => open('search')}>
-      Search
+    <button
+      className="p-2 hover:text-brand-gold transition-colors duration-200"
+      onClick={() => open('search')}
+    >
+      <Search className="w-6 h-6" />
     </button>
   );
 }
@@ -298,21 +309,25 @@ function CartBadge({count}: {count: number | null}) {
   const {publish, shop, cart, prevCart} = useAnalytics();
 
   return (
-    <a
-      href="/cart"
-      onClick={(e) => {
-        e.preventDefault();
+    <button
+      className="relative p-2 hover:text-brand-gold transition-colors duration-200"
+      onClick={() => {
         open('cart');
         publish('cart_viewed', {
           cart,
           prevCart,
           shop,
           url: window.location.href || '',
-        } as CartViewPayload);
+        });
       }}
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
+      <ShoppingBag className="w-5 h-5" />
+      {count !== null && count > 0 && (
+        <span className="absolute top-1 right-1 bg-brand-gold text-white text-[10px] font-medium rounded-full w-4 h-4 flex items-center justify-center">
+          {count > 9 ? '9+' : count}
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -330,59 +345,4 @@ function CartBanner() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
   return <CartBadge count={cart?.totalQuantity ?? 0} />;
-}
-
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/collections',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
-    },
-  ],
-};
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-  };
 }
