@@ -6,6 +6,8 @@ import {
   useState,
 } from 'react';
 
+import {X} from 'lucide-react';
+
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
   type: AsideType;
@@ -96,7 +98,18 @@ export function Aside({
         className={`absolute top-0 right-0 h-[100dvh] w-full max-w-wd flex flex-col bg-white shadow-xl transform transition-transform duration-300 ease-in-out ${
           expanded ? 'translate-x-0' : 'translate-x--full'
         }`}
-      ></aside>
+      >
+        <header className="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+          <h3 className="font-playfair text-x1 text-brand-gray">{heading}</h3>
+        </header>
+        <button
+          onClick={close}
+          className="p-2 -mr-2 text-gray-400 hover:text-gray-500 transition-colors duration-300"
+        >
+          <X className="w-5 h-5" />
+        </button>
+        <main className="flex-1 overflow-y-auto">{children}</main>
+      </aside>
     </div>
   );
 }
