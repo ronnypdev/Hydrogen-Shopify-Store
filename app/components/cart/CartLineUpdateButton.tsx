@@ -7,8 +7,16 @@ type CartLineUpdateButton = {
   lines: CartLineUpdateInput[];
 };
 
-export default function CartLineUpdateButton() {
+export default function CartLineUpdateButton({lines, children}: CartLineUpdateButton) {
   const [updating, setUpdating] = useState<boolean>(false);
 
-  return <CartForm></CartForm>;
+  return (
+    <CartForm
+      route="/cart"
+      action={CartForm.ACTIONS.LinesUpdate}
+      inputs={ }
+    >
+
+    </CartForm>
+  )
 }
